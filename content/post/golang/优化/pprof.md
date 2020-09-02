@@ -85,7 +85,7 @@ go tool pprof http://localhost:8889/debug/pprof/mutex
 
 ### 5. 方式三：web UI界面
 1. 执行使用方式二相关命令，会生成对应的.pb.gz 文件
-2. 启动服务：go tool pprof -http=${ip}:8080 heap.out
+2. 启动服务：go tool pprof -http=${ip}:8080 xxx.pb.gz
 3. 浏览器中访问：ip:8080
 
 ### 6. 参考文档
