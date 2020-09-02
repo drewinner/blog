@@ -17,3 +17,5 @@ categories: ["参考文献"]
 8. [健哥推荐](https://draveness.me "健哥推荐")
 9. [深入理解Golang之http server](https://juejin.im/post/5dd11baff265da0c0c1fe813?utm_campaign=studygolang.com&utm_medium=studygolang.com&utm_source=studygolang.com#heading-10 "深入理解Golang之http server")
 10. [go-redis 文章](http://vearne.cc/archives/1113 "go-redis 文章")
+11. [go-Golang深入理解GMP](https://zhuanlan.zhihu.com/p/168610624 "go-Golang深入理解GMP")
+12. [go-pprof 内存泄漏_我如何在大型代码库上使用pprof调查Go中的内存泄漏](https://blog.csdn.net/cumian8165/article/details/108154960 "go-pprof 内存泄漏_我如何在大型代码库上使用pprof调查Go中的内存泄漏")
