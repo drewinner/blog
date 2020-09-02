@@ -19,7 +19,7 @@ go func() {
 }()
 ```
 
-### 3. 使用方式一：浏览器查看
+### 3. 方式一：浏览器查看
 对当先系统概况有个了解
 ```go
 http://localhost:8889/debug/pprof/
@@ -38,9 +38,9 @@ http://localhost:8889/debug/pprof/
 |threadcreate	|系统线程创建情况的采样信息	|
 |trace	|程序运行跟踪信息	|[《Go trace》](https://mp.weixin.qq.com/s/I9xSMxy32cALSNQAN8wlnQ)
 
-### 4. 使用方式二：交互式命令
+### 4. 方式二：交互式命令
 1. 查看堆栈调用信息
-go tool pprof http://localhost:6060/debug/pprof/heap
+go tool pprof http://localhost:8889/debug/pprof/heap
 ```go
 进入交互模式
 top
@@ -75,16 +75,19 @@ list recvLoop # recvLoop是看到占用cpu较高的函数名称
 
 ```
 2. 查看 30 秒内的 CPU 信息
-go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
+go tool pprof http://localhost:8889/debug/pprof/profile?seconds=30
 3. 查看 goroutine 阻塞
-go tool pprof http://localhost:6060/debug/pprof/block
+go tool pprof http://localhost:8889/debug/pprof/block
 4. 收集 5 秒内的执行路径
-go tool pprof http://localhost:6060/debug/pprof/trace?seconds=5
+go tool pprof http://localhost:8889/debug/pprof/trace?seconds=5
 5. 争用互斥持有者的堆栈跟踪
-go tool pprof http://localhost:6060/debug/pprof/mutex
+go tool pprof http://localhost:8889/debug/pprof/mutex
 
-### 5. 使用方式三：web UI界面，包括流程图分析，火焰图等功能
+### 5. 方式三：web UI界面
 1. 执行使用方式二相关命令，会生成对应的.pb.gz 文件
 2. 启动服务：go tool pprof -http=${ip}:8080 heap.out
 3. 浏览器中访问：ip:8080
 
+### 6. 参考文档
+1. https://blog.wolfogre.com/posts/go-ppof-practice/
+2. https://blog.csdn.net/sunxianghuang/article/details/93869683
