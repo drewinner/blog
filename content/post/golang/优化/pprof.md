@@ -43,23 +43,15 @@ http://localhost:8889/debug/pprof/
 go tool pprof http://localhost:8889/debug/pprof/heap
 ```go
 进入交互模式
-top
+>top
 Showing nodes accounting for 6385.52kB, 100% of 6385.52kB total
 Showing top 10 nodes out of 37
       flat  flat%   sum%        cum   cum%
  3232.96kB 50.63% 50.63%  3232.96kB 50.63%  github.com/samuel/go-zookeeper/zk.(*Conn).recvLoop
  1616.48kB 25.31% 75.94%  1616.48kB 25.31%  github.com/samuel/go-zookeeper/zk.Connect
-  512.05kB  8.02% 83.96%   512.05kB  8.02%  net.(*Resolver).lookupIPAddr
-  512.02kB  8.02% 91.98%   512.02kB  8.02%  regexp.makeOnePass.func1
-  512.02kB  8.02%   100%   512.02kB  8.02%  syscall.anyToSockaddr
-         0     0%   100%   512.02kB  8.02%  github.com/go-playground/validator/v10.init
-         0     0%   100%  3232.96kB 50.63%  github.com/samuel/go-zookeeper/zk.(*Conn).loop.func2
-         0     0%   100%   512.02kB  8.02%  github.com/streadway/amqp.DefaultDial.func1
-         0     0%   100%   512.02kB  8.02%  github.com/streadway/amqp.DialConfig
-         0     0%   100%   512.02kB  8.02%  go-push-service/pkg/grmq.createConnect
 
 
-list recvLoop # recvLoop是看到占用cpu较高的函数名称     
+>list recvLoop # recvLoop是看到占用cpu较高的函数名称     
 3.16MB     3.16MB (flat, cum) 50.63% of Total
          .          .    832:func (c *Conn) recvLoop(conn net.Conn) error {
          .          .    833:	sz := bufferSize
