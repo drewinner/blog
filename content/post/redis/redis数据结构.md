@@ -24,6 +24,27 @@ categories: ["redis"]
 ### 4. 五种基本数据类型和及底层数据结构对应关系
 ![](/images/goredis/redis-value-data-001.jpg)
 
+```
+1. 字符串底层数据结构
+	int 8个字节的长整型
+	embstr 小于等于39个字节的字符串
+	raw 大于39个字节的字符串
+2. list底层数据结构
+	ziplist:当列表元素个数小于list-max-ziplist-entries配置（默认512个)
+	同时列表中每个元素的值都小于list-max-ziplist-value(默认64字节).
+	linkedlist
+3. 哈希底层编码
+	ziplist:当哈希元素个数小于hash-max-ziplist-entries(默认512个)、
+	同时所有值都小于hash-max-ziplist-value配置(默认64字节)
+	哈希表：不满足上面条件时为hash表
+4. 有序集合
+	ziplist:当有序集合元素个数小于zset-max-ziplist-entries(默认128个)、
+	同时所有值都小于zset-max-ziplist-value配置(默认64字节)
+	skiplist：不满足上面条件时为跳表
+5. 无序集合
+	整数集合:当集合中元素个数小于set-max-intset-entries(默认512个)时
+	hashtable:不满足上面条件时为跳表
+```
 图中可以看出、string类型只有一种数据结构即简单动态字符串。list、hash，sorted set,set有两种底层数据结构。特点是一个键对应了一个集合的数据
 
 ### 5. 问题
@@ -47,4 +68,15 @@ categories: ["redis"]
 	4. 按查找时间复杂度分类
 	
 	![](/images/goredis/redis-value-data-003.jpg)
+
+	5. 不同操作的复杂度
+		1. 字符串操作
+		![](/images/goredis/redis-value-data-004.jpg)
+		2. list操作
+		![](/images/goredis/redis-value-data-005.jpg)
+		提示：
+			1. lpush+lpop 栈
+			2. lpush+rpop 队列
+			3. lpush+ltrim 有限集合
+			4. lpush+brpop 消息队列
 3. 什么是简单动态字符串、和常用的字符串是一回事吗？
