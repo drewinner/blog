@@ -79,4 +79,10 @@ categories: ["redis"]
 			2. lpush+rpop 队列
 			3. lpush+ltrim 有限集合
 			4. lpush+brpop 消息队列
+		3. 哈希操作
+		![](/images/goredis/redis-value-data-006.jpg)
+		4. set操作
+		![](/images/goredis/redis-value-data-007.jpg)
+		4. zset操作
+		![](/images/goredis/redis-value-data-008.jpg)
 3. 什么是简单动态字符串、和常用的字符串是一回事吗？
