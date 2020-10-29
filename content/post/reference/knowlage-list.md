@@ -19,3 +19,4 @@ categories: ["参考文献"]
 10. [go-redis 文章](http://vearne.cc/archives/1113 "go-redis 文章")
 11. [go-Golang深入理解GMP](https://zhuanlan.zhihu.com/p/168610624 "go-Golang深入理解GMP")
 12. [go-pprof 内存泄漏_我如何在大型代码库上使用pprof调查Go中的内存泄漏](https://blog.csdn.net/cumian8165/article/details/108154960 "go-pprof 内存泄漏_我如何在大型代码库上使用pprof调查Go中的内存泄漏")
+13. [数学公式](https://www.shuxuele.com/data/standard-deviation.html "数学公式")
