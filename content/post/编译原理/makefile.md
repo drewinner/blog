@@ -175,7 +175,25 @@ make命令开始时，会把找寻include 所指出的其它 Makefile，并把�
 		说明：vpath使用方法中的<pattern>需要包含"%"字符。"%"的意思是匹配零或若干字符、例如：%.h表示所有以".h"结尾的文件。<pattern>指定了要搜索的文件集。，而 <directories>则指定了<pattern>的文件集的搜索的目录
 		4. 例子：`vpath %.h ../headers`
 7. 伪目标
-	```shell
-	clean:
-		rm *.o temp
-    ```
+		```shell
+		clean:
+			rm *.o temp
+        ```
+    1. 我们生成了许多文件编译文件、我们也应该提供一个清除他们的“目标”以备完整地重编译而用。因为我们并不生成clean这个文件。“伪目标”并不是一个文件、只是一个标签、不能和文件重名
+    2. .PYONY 来显示的指明一个目标是“伪目标”、向make说明、不管是否有个这个文件、这个目标就是“伪目标”`.PYONY:clean`
+	    ```shell
+	    .PYONY clean
+	    clean:
+	    	rm *.o temp
+        ```
+    3. 伪目标一般没有依赖的文件。但是我们也可以为伪目标指定所依赖的文件。伪目标同样可以作为“默认目标”，只要将其放在第一个。一个示例就是、如果的Makefile需要一口气生成若干个可执行文件、但你只想简单的敲一个命令完事、并且所有的目标文件都写在一个Makefile中、那么可以使用“伪目标”这个特性
+	    ```shell
+	    all : prog1 prog2 prog3
+		.PHONY : all
+		prog1 : prog1.o utils.o
+		cc -o prog1 prog1.o utils.o
+		prog2 : prog2.o
+		cc -o prog2 prog2.o
+		prog3 : prog3.o sort.o utils.o
+		cc -o prog3 prog3.o sort.o utils.o
+        ```
