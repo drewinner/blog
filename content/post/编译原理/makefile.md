@@ -150,3 +150,32 @@ make命令开始时，会把找寻include 所指出的其它 Makefile，并把�
 	command  ... 
     ```
     targets是文件名，以空格分开，可以使用通配符。一般来说，我们的目标基本上是一 个文件，但也有可能是多个文件。  command 是命令行，如果其不与“target:prerequisites”在一行，那么，必须以[Tab 键]开头，如果和 prerequisites 在一行，那么可以用分号做为分隔。（见上） prerequisites 也就是目标所依赖的文件（或依赖目标）。如果其中的某个文件要比目标文件要新，那么， 目标就被认为是“过时的”，被认为是需要重生成的。这个在前面已经讲过了。    如果命令太长，你可以使用反斜框（‘\’）作为换行符。make 对一行上有多少个字符 没有限制。规则告诉 make 两件事，文件的依赖关系和如何成成目标文件。    一般来说，make 会以 UNIX 的标准 Shell，也就是/bin/sh 来执行命令。
+5. 在规则中使用通配符
+	1. make支持三个通配符、\"*\" 、\"?\"、\"[...]\"
+	2. 波浪号"~"字符在文件名中也有特殊用途、如果是"~/test"、这就表示当前用户$HOME目录下的test目录。如果"~test/test"则表示用户test的宿主目录下的test目录
+	3. 例子
+	```shell
+	clean:
+		rm -rf *.o #表示删除所有.o结尾的文件
+	例子：
+		print:*.c #print 依赖于所有的.c文件
+		lpr -p $? #是一个自动化变量
+		touch print
+	例子：
+		objects = *.o #这里注意objects的值就是*.o
+	例子：
+		objects = $(wildcard *.o)
+    ```
+6. 文件搜索
+	1. 方法一、VPATH:如果没指定这个变量、make只会在当前目录下寻找依赖文件、如果指定了、就在指定目录下去寻找`VPATH = src:../headers`指定两个目录、src 和"../headers"、make会按照这个顺序去寻找
+	2. 方法二、使用make的"vpath"关键字、这里不是变量、是一个关键字、
+		1. vpath <pattern> <directories> 为符合模式<pattern>的文件指定搜索目录<directories>
+		2. vpath <pattern> 清除符合模式<pattern>的文件的搜索目录
+		3. vpath 清除所有已被设置好的文件搜索目录
+		说明：vpath使用方法中的<pattern>需要包含"%"字符。"%"的意思是匹配零或若干字符、例如：%.h表示所有以".h"结尾的文件。<pattern>指定了要搜索的文件集。，而 <directories>则指定了<pattern>的文件集的搜索的目录
+		4. 例子：`vpath %.h ../headers`
+7. 伪目标
+	```shell
+	clean:
+		rm *.o temp
+    ```
