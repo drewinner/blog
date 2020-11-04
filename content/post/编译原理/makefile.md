@@ -197,3 +197,39 @@ make命令开始时，会把找寻include 所指出的其它 Makefile，并把�
 		prog3 : prog3.o sort.o utils.o
 		cc -o prog3 prog3.o sort.o utils.o
         ```
+    4. Makefile中的第一个目标会被作为其默认目标、我们声明了一个all的伪目标、其依赖于其它三个目标、由于伪目标的特性是总是被执行的。所以其依赖的那三个目标总是不如"all"这个目标新。所以其他三个目标总是被决议、也就达到了我们一口气生成多个目标的目的。
+8. 多目标
+	1. Makefile的规则中的目标可能不止一个、其支持多目标，有可能我们的多个目标同时依赖于同一个文件、并且其生成的命令大体类似。于是我们就把他合并起来、当然、多个目标的生成规则的执行命令是同一个。这样可能给我们带来麻烦、不过好在我们可以使用一个自动化变量"$@"、这个变量表示着目前规则中所有的目标集合。
+	2. 例子一：
+		```shell
+			bigoutput littleoutput : text.g
+			generate text.g -$(subst output,,$@) > $@
+			#等价于
+			bigoutput : text.go
+			generate text.go -big > bigoutput
+			littleoutput: text.go
+			generate text.go -little > littleoutput
+			#其中，-$(subst output,,$@)中的“$”表示执行一个Makefile的函数，函数名为subst,后面的为参数。关于函数，将在后面讲述。这里的这个函数是截取字符串的意思，“$@”表 示目标的集合，就像一个数组，“$@”依次取出目标，并执于命令
+        ```
+    3. 例子二：
+    	```shell
+    	CMD = agent aggregator
+		ENV = (shell echo $ENV)
+		all: $(CMD)
+		.PHONY:all
+		$(CMD):
+		        go build -o $@ a.go
+		clean:
+		        rm -rf a b
+        ```
+9. 静态模式
+	1. 静态模式可以更加容易的定义多目标的规则、可以让我们的规则更加有弹性和灵活
+	2. 语法：
+		```shell
+			<targets ...>: <target-pattern>: <prereq-patterns ...>   
+			<commands>
+			....
+			#targets 定义了一系列的目标文件，可以有通配符。是目标的一个集合。
+			#target-parrtern 是指明了 targets 的模式，也就是的目标集模式。 
+			#prereq-parrterns 是目标的依赖模式，它对 target-parrtern 形成的模式再进行一次依赖 目标的定义   
+        ```
