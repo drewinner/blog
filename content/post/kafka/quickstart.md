@@ -30,3 +30,59 @@ categories: ["kafka"]
 7. Replica:副本为保证集群中的某个节点发生故障时， 该节点上的 partition 数据不丢失，且 kafka 仍然能够继续工作，kafka 提供了副本机制，一个 topic 的每个分区都有若干个副本一个 leader 和若干个 follower
 8. Leader:每个分区多个副本的“主”，生产者发送数据的对象，以及消费者消费数据的对象都是 leader
 9. follower： 每个分区多个副本中的“从”，实时从 leader 中同步数据，保持和 leader 数据的同步。 leader 发生故障时，某个 follower 会成为新的 follower
+
+### 6. 快速启动
+1. tar tar -xzf kafka_2.13-2.6.0.tgz
+2. ln -s kafka_2.13-2.6.0 kafka  软连接、便于以后切换版本
+3. 启动zookeeper `cd kafka && bin/zookeeper-server-start.sh -daemon config/zookeeper.properties`
+4. 启动kafka `bin/kafka-server-start.sh -daemon config/server.properties`
+5. 停止kafka `bin/kafka-server-stop.sh stop`
+6. 修改配置文件
+	1. cd config && vim server.properties
+	2. 配置说明
+		```shell
+		#broker全局编号、不能重复
+		broker.id=0
+		#处理网络请求的线程数量
+		num.network.threads=3
+		#用来处理磁盘 IO 的线程数量
+		num.io.threads=8
+		#发送套接字的缓冲区大小
+		socket.send.buffer.bytes=102400
+		#接收套接字的缓冲区大小
+		socket.receive.buffer.bytes=102400
+		#请求套接字的缓冲区大小
+		socket.request.max.bytes=104857600
+		#kafka 运行日志存放的路径
+		log.dirs=/tmp/kafka-logs
+		#topic 在当前 broker 上的分区个数
+		num.partitions=1
+		#用来恢复和清理 data 下数据的线程数量
+		num.recovery.threads.per.data.dir=1
+		#segment 文件保留的最长时间，超时将被删除
+		log.retention.hours=168
+		#配置连接 Zookeeper 集群地址
+		zookeeper.connect=localhost:2181,ip2:2181
+        ```
+7. kafka命令行操作
+	1. 查看服务器所有topic:`bin/kafka-topics.sh --bootstrap-server localhost:9092 --list or bin/kafka-topics.sh --zookeeper localhost:2181 --list`
+	2. 创建topic
+		```shell
+			1. bin/kafka-topics.sh --create --topic quickstart-events-second --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
+			#--replication-factor 定义副本数
+			#--partitions 定义分区数
+			2. bin/kafka-topics.sh --create --topic quickstart-events-third --zookeeper localhost:2181 --replication-factor 1 --partitions 1
+        ```
+    3. 查看topic详情
+	    ```shell
+	    	1. bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic quickstart-events
+	    	2. bin/kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic quickstart-events
+        ```
+    4. 删除topic
+	    ```shell
+	    	1. bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic quickstart-events-second
+	    	2. bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic quickstart-events-third
+        ```
+    5. 发送消息 `bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic quickstart-events`
+    6. 消费消息 `bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic quickstart-events --from-beginning`
+    7. 修改分区数`bin/kafka-topics.sh --zookeeper localhost:2181 --alter --topic quickstart-events --partitions 2`
